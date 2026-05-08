@@ -1,0 +1,29 @@
+aid: victoriametrics
+url: https://raw.githubusercontent.com/api-evangelist/victoriametrics/refs/heads/main/apis.yml
+name: VictoriaMetrics
+x-type: company
+description: >-
+  VictoriaMetrics is a fast open-source monitoring solution and time-series database, fully compatible with Prometheus protocols.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Database
+  - Time-Series
+  - Monitoring
+  - Open Source
+  - Prometheus
+created: '2026-05-08'
+modified: '2026-05-08'
+specificationVersion: '0.19'
+apis: []
+common:
+  - type: Website
+    url: https://victoriametrics.com/
+  - type: Plans
+    url: plans/victoriametrics-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/victoriametrics-rate-limits.yml
+  - type: FinOps
+    url: finops/victoriametrics-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
