@@ -5,7 +5,7 @@ provider: VictoriaMetrics
 providerId: victoriametrics
 created: '2026-05-08'
 modified: '2026-05-08'
-reconciled: false
+reconciled: true
 tags:
 - Database
 - Time-Series
@@ -15,10 +15,20 @@ tags:
 - FinOps
 - Cost Management
 - FOCUS
-description: FOCUS-aligned FinOps placeholder for VictoriaMetrics. Pipeline will replace with real billing details.
-notes: Initial scaffold — billing model has not yet been reconciled.
+description: >-
+  FOCUS-aligned FinOps profile for VictoriaMetrics. The dominant cost surfaces
+  are (a) the underlying infrastructure for self-hosted Community/Enterprise
+  (cloud VMs, attached SSD/EBS, network egress) and (b) VictoriaMetrics
+  Enterprise license or VictoriaMetrics Cloud subscription metered by
+  ingestion rate / active series. There is no per-query or per-MAU charge.
+notes: >-
+  VictoriaMetrics exposes per-tenant statistics that map cleanly to FOCUS
+  ResourceTag for chargeback by tenant. Cloud invoices are denominated in
+  ingestion-rate / active-series tiers.
 sources:
-- https://victoriametrics.com/
+- https://victoriametrics.com/products/enterprise/
+- https://victoriametrics.com/products/cloud/
+- https://docs.victoriametrics.com/PerTenantStatistic.html
 - https://focus.finops.org/focus-specification/v1-3/
 alignedWith:
   framework: FinOps Foundation Framework
@@ -27,10 +37,10 @@ alignedWith:
   dataSpecVersion: '1.3'
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 publisherName: VictoriaMetrics
-serviceCategory: Database
+serviceCategory: Observability / Time-Series
 billingModel:
-  pricingCategory: To Be Reconciled
-  billingFrequency: Monthly
+  pricingCategory: License + Underlying Infra OR Managed Subscription
+  billingFrequency: Annual (license) + Monthly (cloud / infra)
   billingCurrency: USD
   chargeCategories:
   - Usage
@@ -38,29 +48,60 @@ billingModel:
   - Adjustment
 focusColumns:
   ServiceName: VictoriaMetrics
-  ServiceCategory: Database
+  ServiceCategory: Observability
   ProviderName: VictoriaMetrics
   PublisherName: VictoriaMetrics
   InvoiceIssuerName: VictoriaMetrics
   BillingCurrency: USD
   ChargeCategory: Usage
+  PricingUnit: ingestion-rate / active-series
 meters:
-- name: api_usage
-  description: Catch-all meter pending reconciliation.
-  unit: varies
+- name: enterprise_license
+  description: Annual VictoriaMetrics Enterprise license fee.
+  unit: license-year
   aggregation: sum
   dimensions:
   - account
-  - resource
+- name: cloud_ingestion_rate
+  description: Datapoints ingested per second on VictoriaMetrics Cloud (managed).
+  unit: samples_per_second
+  aggregation: avg
+  dimensions:
+  - cluster_id
+- name: cloud_active_series
+  description: Active time series stored on VictoriaMetrics Cloud.
+  unit: series
+  aggregation: avg
+  dimensions:
+  - cluster_id
+- name: compute_instance_hours
+  description: Underlying cloud VM hours running vminsert / vmselect / vmstorage / vmagent.
+  unit: vm-hour
+  aggregation: sum
+  dimensions:
+  - component
+  - region
+- name: storage_gb_month
+  description: Block storage attached to vmstorage.
+  unit: GB-month
+  aggregation: avg
+  dimensions:
+  - cluster_id
+- name: network_egress
+  description: Egress bytes from VictoriaMetrics to consumers (Grafana, alerts, federation).
+  unit: GB
+  aggregation: sum
+  dimensions:
+  - region
 principles:
 - name: Visibility
-  description: Pull provider invoices or usage exports until a self-serve usage feed is documented.
+  description: Use vmstats / per-tenant stats for chargeback; combine with cloud cost-export.
 - name: Allocation
-  description: Tag invoice line items to consuming business units in your FinOps store.
+  description: Multi-tenant clusters allocate via vmselect/vminsert tenantID; otherwise tag clusters by team/env.
 - name: Optimization
-  description: Levers depend on the provider's billing model; review at renewal once reconciled.
+  description: Apply Enterprise downsampling and retention rules; reduce label cardinality; right-size vminsert/vmselect.
 - name: Accountability
-  description: Assign a contract owner to review billing against negotiated terms.
+  description: Assign cluster owners; set per-tenant active-series budgets in Enterprise.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

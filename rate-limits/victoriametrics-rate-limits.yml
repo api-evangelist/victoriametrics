@@ -15,21 +15,55 @@ tags:
 - Rate Limiting
 - Quotas
 - Throttling
-description: Placeholder rate-limit artifact for VictoriaMetrics. Replace with real limits once researched.
-notes: Initial scaffold — limits have not yet been reconciled.
+description: >-
+  VictoriaMetrics is self-hosted (or VictoriaMetrics Cloud as a managed
+  service); there is no managed REST quota in OSS. Operational caps are set
+  via flags on each component (-search.maxConcurrentRequests, -search.maxQueryDuration,
+  -insert.maxQueueDuration, -maxConcurrentInserts, -maxLabelsPerTimeseries, etc.).
+  Enterprise multi-tenancy adds per-tenant cardinality / ingestion / query
+  rate limits enforced at vminsert and vmselect.
+notes: >-
+  Numeric defaults are documented per-flag; cluster operators tune them. Cloud
+  customers see per-plan caps in the Cloud console. Reconciliation flagged
+  false — exact per-version defaults vary across releases.
 sources:
-- https://victoriametrics.com/
+- https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#capacity-planning
+- https://docs.victoriametrics.com/Cluster-VictoriaMetrics.html
+- https://docs.victoriametrics.com/PerTenantStatistic.html
 responseCodes:
   throttled: 429
+  busy: 503
 limits:
-- name: Default
-  scope: account
-  metric: varies
-  limit: see provider documentation
-  notes: Pending reconciliation.
+- name: Concurrent search requests (-search.maxConcurrentRequests)
+  scope: vmselect / single-node
+  metric: concurrent_requests
+  limit: see -search.maxConcurrentRequests flag
+  notes: Default scales with CPU count; excess requests queue or 429.
+- name: Query duration cap (-search.maxQueryDuration)
+  scope: vmselect / single-node
+  metric: ms
+  limit: see -search.maxQueryDuration flag
+  notes: Long-running queries are terminated.
+- name: Concurrent inserts (-maxConcurrentInserts)
+  scope: vminsert / single-node
+  metric: concurrent_inserts
+  limit: see -maxConcurrentInserts flag
+  notes: Excess inserts queue or 429.
+- name: Active series per tenant (Enterprise)
+  scope: tenant
+  metric: active_series
+  limit: per-tenant Enterprise quota
+  notes: Enforced via vmstorage flags in cluster Enterprise.
+- name: Ingestion rate per tenant (Enterprise)
+  scope: tenant
+  metric: samples_per_second
+  limit: per-tenant Enterprise quota
+  notes: Configurable via -storage.maxIngestionRate or similar.
 policies:
 - name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
+  description: Honor 429/503 with exponential backoff; vmagent buffers and retries on remote-write failures.
+- name: Capacity Planning
+  description: Right-size vminsert, vmselect and vmstorage per the cluster sizing guide.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

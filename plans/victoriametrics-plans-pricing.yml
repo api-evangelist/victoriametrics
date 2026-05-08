@@ -13,29 +13,82 @@ tags:
 - Open Source
 - Prometheus
 - Plans
-description: Placeholder plans/pricing artifact for VictoriaMetrics. Replace with real published pricing once
-  the pipeline researches the provider's plans page.
-notes: Initial scaffold — plans/pricing have not yet been reconciled.
+- Pricing
+description: >-
+  VictoriaMetrics ships in two editions: open-source Community (Apache 2.0) and
+  Enterprise (commercial license, additional features such as vmanomaly,
+  downsampling, multi-tenancy quotas, audit logs, official support and SLA).
+  The fully-managed VictoriaMetrics Cloud is also offered. Public list pricing
+  is not advertised; quotes are by sales / private offers.
+notes: >-
+  Public pages do not enumerate Enterprise list prices; trial licenses are
+  free. Numeric pricing remains unreconciled.
 sources:
-- https://victoriametrics.com/
+- https://victoriametrics.com/products/enterprise/
+- https://victoriametrics.com/products/enterprise/trial/
+- https://victoriametrics.com/products/cloud/
+- https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/LICENSE
 plans:
-- id: victoriametrics-default
-  name: To Be Reconciled
-  type: enterprise
-  description: Initial scaffold; replace with provider plan tiers once pricing is reconciled.
+- id: victoriametrics-community
+  name: VictoriaMetrics Community
+  type: free
+  description: Apache 2.0 open-source single-node and cluster components (vminsert, vmselect, vmstorage, vmagent, vmalert, vmctl). Free to download and self-host.
   entries:
-  - label: API Access
-    name: api_access
+  - label: Open source
+    name: oss
     type: flat
-    metric: varies
+    metric: license
     limit: -1
-    timeFrame: usage
+    timeFrame: perpetual
     geo: global
     unit: 1
-    price: see https://victoriametrics.com/
+    price: 0
     userMultiplied: false
-  elements:
-  - name: Pending Reconciliation
+- id: victoriametrics-enterprise-trial
+  name: Enterprise Trial
+  type: free
+  description: Free trial license for VictoriaMetrics Enterprise (vmanomaly, downsampling, multitenancy quotas, audit logs, MicroTime, Hot Standby).
+  entries:
+  - label: Trial license
+    name: trial
+    type: flat
+    metric: license
+    limit: -1
+    timeFrame: trial
+    geo: global
+    unit: 1
+    price: 0
+    userMultiplied: false
+- id: victoriametrics-enterprise
+  name: VictoriaMetrics Enterprise
+  type: enterprise
+  description: Commercial self-hosted license. Adds enterprise features, official support, SLAs.
+  entries:
+  - label: Custom contract
+    name: enterprise_contract
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: annual
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+- id: victoriametrics-cloud
+  name: VictoriaMetrics Cloud
+  type: subscription
+  description: Fully-managed VictoriaMetrics on AWS / GCP. Tiered by ingestion rate and active series; consumption-based billing.
+  entries:
+  - label: Managed
+    name: managed
+    type: usage
+    metric: ingestion_rate
+    limit: -1
+    timeFrame: month
+    geo: AWS, GCP
+    unit: 1
+    price: see https://victoriametrics.com/products/cloud/
+    userMultiplied: false
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
