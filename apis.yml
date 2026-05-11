@@ -117,6 +117,22 @@ common:
     url: rate-limits/victoriametrics-rate-limits.yml
   - type: FinOps
     url: finops/victoriametrics-finops.yml
+  - type: Integrations
+    url: https://victoriametrics.com/partners/index.html
+integrations:
+  - name: Skip to content
+  - name: Allenta
+  - name: Alpha Data
+  - name: Bajau
+  - name: CloudRaft
+  - name: Cogito Software
+  - name: Erythix
+  - name: Megazone Cloud
+  - name: Ness
+  - name: Niubits
+  - name: Piros
+  - name: Sensor Factory
+  - name: Zelarsoft
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
