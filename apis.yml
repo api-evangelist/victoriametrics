@@ -1,7 +1,7 @@
 aid: victoriametrics
 url: https://raw.githubusercontent.com/api-evangelist/victoriametrics/refs/heads/main/apis.yml
 name: VictoriaMetrics
-x-type: company
+kind: company
 description: >-
   VictoriaMetrics is a fast open-source time-series database and monitoring
   solution. It exposes a Prometheus-compatible HTTP query API, a wide range of
