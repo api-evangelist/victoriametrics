@@ -101,6 +101,8 @@ apis:
       - type: Documentation
         url: https://docs.victoriametrics.com/anomaly-detection/
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/victoriametrics
   - type: Website
     url: https://victoriametrics.com/
   - type: Documentation
