@@ -1,0 +1,300 @@
+openapi: 3.1.0
+info:
+  title: VictoriaMetrics HTTP API
+  version: '1'
+  description: |
+    VictoriaMetrics is a fast open-source time-series database. It exposes a
+    Prometheus-compatible HTTP query API plus a wide range of ingestion and
+    export endpoints (JSON, CSV, Prometheus text exposition, native binary,
+    InfluxDB Line Protocol, DataDog v1/v2, Graphite, OpenTSDB, federation).
+    Authentication is optional and typically delegated to vmauth or fronted
+    by mTLS.
+  contact:
+    name: VictoriaMetrics Documentation
+    url: https://docs.victoriametrics.com/
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: http://{host}:{port}
+    description: VictoriaMetrics single-node instance
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '8428'
+tags:
+  - name: Query
+    description: Prometheus-compatible query endpoints (PromQL / MetricsQL)
+  - name: Import
+    description: Data ingestion endpoints
+  - name: Export
+    description: Raw sample export endpoints
+  - name: Admin
+    description: Administrative operations
+  - name: Third-Party
+    description: Endpoints compatible with other monitoring formats
+paths:
+  /api/v1/query:
+    get:
+      tags: [Query]
+      summary: Perform a PromQL/MetricsQL instant query
+      operationId: instantQuery
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: time
+          in: query
+          schema:
+            type: string
+        - name: timeout
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Query result
+    post:
+      tags: [Query]
+      summary: Perform a PromQL/MetricsQL instant query (POST form)
+      operationId: instantQueryPost
+      responses:
+        '200':
+          description: Query result
+  /api/v1/query_range:
+    get:
+      tags: [Query]
+      summary: Range query over a time period
+      operationId: rangeQuery
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: end
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: step
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Range query result
+    post:
+      tags: [Query]
+      operationId: rangeQueryPost
+      summary: Range query (POST form)
+      responses:
+        '200':
+          description: Range query result
+  /api/v1/labels:
+    get:
+      tags: [Query]
+      summary: Retrieve label names within a time range
+      operationId: getLabels
+      responses:
+        '200':
+          description: List of label names
+  /api/v1/label/{label}/values:
+    get:
+      tags: [Query]
+      summary: Get all values for a specific label
+      operationId: getLabelValues
+      parameters:
+        - name: label
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of label values
+  /api/v1/series:
+    get:
+      tags: [Query]
+      summary: Return series matching label matchers
+      operationId: getSeries
+      parameters:
+        - name: match[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Series list
+    post:
+      tags: [Query]
+      operationId: getSeriesPost
+      summary: Return series (POST form)
+      responses:
+        '200':
+          description: Series list
+  /api/v1/status/tsdb:
+    get:
+      tags: [Query]
+      summary: Cardinality and TSDB statistics
+      operationId: getTsdbStatus
+      responses:
+        '200':
+          description: TSDB status
+  /api/v1/metadata:
+    get:
+      tags: [Query]
+      summary: Get stored metrics metadata
+      operationId: getMetadata
+      responses:
+        '200':
+          description: Metadata
+  /api/v1/import:
+    post:
+      tags: [Import]
+      summary: Import data in JSON line format
+      operationId: importJson
+      requestBody:
+        content:
+          application/x-ndjson:
+            schema:
+              type: string
+      responses:
+        '204':
+          description: Imported
+  /api/v1/import/native:
+    post:
+      tags: [Import]
+      summary: Import data in native binary format
+      operationId: importNative
+      responses:
+        '204':
+          description: Imported
+  /api/v1/import/csv:
+    post:
+      tags: [Import]
+      summary: Import CSV-formatted metrics
+      operationId: importCsv
+      responses:
+        '204':
+          description: Imported
+  /api/v1/import/prometheus:
+    post:
+      tags: [Import]
+      summary: Import data in Prometheus text exposition format
+      operationId: importPrometheus
+      responses:
+        '204':
+          description: Imported
+  /write:
+    post:
+      tags: [Import]
+      summary: InfluxDB line protocol ingestion
+      operationId: influxWrite
+      responses:
+        '204':
+          description: Written
+  /api/v1/export:
+    get:
+      tags: [Export]
+      summary: Export raw samples in JSON line format
+      operationId: exportJson
+      responses:
+        '200':
+          description: Exported samples
+    post:
+      tags: [Export]
+      operationId: exportJsonPost
+      summary: Export raw samples (POST form)
+      responses:
+        '200':
+          description: Exported samples
+  /api/v1/export/csv:
+    get:
+      tags: [Export]
+      summary: Export raw samples as CSV
+      operationId: exportCsv
+      responses:
+        '200':
+          description: Exported samples
+  /api/v1/export/native:
+    get:
+      tags: [Export]
+      summary: Export raw samples in native binary format
+      operationId: exportNative
+      responses:
+        '200':
+          description: Exported samples
+  /federate:
+    get:
+      tags: [Export]
+      summary: Prometheus federation endpoint
+      operationId: federate
+      responses:
+        '200':
+          description: Federated metrics in text exposition format
+  /api/v1/admin/tsdb/delete_series:
+    post:
+      tags: [Admin]
+      summary: Delete matching time series from storage
+      operationId: deleteSeries
+      parameters:
+        - name: match[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '204':
+          description: Deleted
+  /datadog/api/v1/series:
+    post:
+      tags: [Third-Party]
+      summary: Ingest metrics in DataDog v1 format
+      operationId: datadogV1
+      responses:
+        '202':
+          description: Accepted
+  /datadog/api/v2/series:
+    post:
+      tags: [Third-Party]
+      summary: Ingest metrics in DataDog v2 format
+      operationId: datadogV2
+      responses:
+        '202':
+          description: Accepted
+  /graphite/metrics/find:
+    get:
+      tags: [Third-Party]
+      summary: Graphite-compatible metric search
+      operationId: graphiteFind
+      responses:
+        '200':
+          description: Search results
+  /api/put:
+    post:
+      tags: [Third-Party]
+      summary: OpenTSDB HTTP put compatibility
+      operationId: opentsdbPut
+      responses:
+        '204':
+          description: Accepted
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+      description: Optional HTTP Basic auth when fronted by vmauth
+security: []
