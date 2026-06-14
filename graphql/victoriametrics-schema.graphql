@@ -1,0 +1,591 @@
+"""
+VictoriaMetrics GraphQL Schema
+Conceptual schema mapping the VictoriaMetrics Prometheus-compatible HTTP API,
+MetricsQL query engine, cluster components, and enterprise features to GraphQL types.
+"""
+
+scalar Time
+scalar Float64
+scalar JSON
+scalar Duration
+
+# ---------------------------------------------------------------------------
+# Core metric primitives
+# ---------------------------------------------------------------------------
+
+"""A single named metric with its label set."""
+type Metric {
+  name: MetricName!
+  labels: [MetricLabel!]!
+  type: MetricType
+  help: String
+}
+
+"""The __name__ label value of a metric."""
+type MetricName {
+  value: String!
+}
+
+"""A key-value label pair attached to a metric or time series."""
+type MetricLabel {
+  name: String!
+  value: String!
+}
+
+"""The value of a metric at a specific instant."""
+type MetricValue {
+  timestamp: Time!
+  value: Float64!
+}
+
+"""Prometheus metric type enumeration."""
+enum MetricType {
+  COUNTER
+  GAUGE
+  HISTOGRAM
+  SUMMARY
+  UNTYPED
+}
+
+# ---------------------------------------------------------------------------
+# Samples and time series
+# ---------------------------------------------------------------------------
+
+"""A single (timestamp, value) data point."""
+type Sample {
+  timestamp: Time!
+  value: Float64!
+}
+
+"""A complete time series: metric identity + stream of samples."""
+type TimeSeries {
+  metric: Metric!
+  samples: [Sample!]!
+}
+
+"""The raw data payload for a time series (used in export/import contexts)."""
+type TimeSeriesData {
+  metric: JSON!
+  values: [Float64!]!
+  timestamps: [Time!]!
+}
+
+"""Metadata describing a time series without its samples."""
+type SeriesMeta {
+  metric: Metric!
+  minTime: Time
+  maxTime: Time
+}
+
+"""A (timestamp, value) pair within a range-query result."""
+type RangeSample {
+  timestamp: Time!
+  value: Float64!
+}
+
+# ---------------------------------------------------------------------------
+# Query language abstractions
+# ---------------------------------------------------------------------------
+
+"""A parsed PromQL expression string."""
+type PromQL {
+  expression: String!
+  isValid: Boolean!
+  parseError: String
+}
+
+"""A MetricsQL expression string (superset of PromQL)."""
+type MetricsQL {
+  expression: String!
+  isValid: Boolean!
+  parseError: String
+  metricsqlExtensions: [String!]
+}
+
+# ---------------------------------------------------------------------------
+# Query results
+# ---------------------------------------------------------------------------
+
+"""Result of an instant query (/api/v1/query)."""
+type QueryResult {
+  status: String!
+  resultType: String!
+  result: [InstantVector!]!
+  warnings: [String!]
+}
+
+"""A single instant-query vector element."""
+type InstantVector {
+  metric: JSON!
+  value: [Float64!]!
+}
+
+"""Result of a range query (/api/v1/query_range)."""
+type RangeResult {
+  status: String!
+  resultType: String!
+  result: [RangeVector!]!
+  warnings: [String!]
+}
+
+"""A single range-query matrix element."""
+type RangeVector {
+  metric: JSON!
+  values: [[Float64!]!]!
+}
+
+# ---------------------------------------------------------------------------
+# Label discovery
+# ---------------------------------------------------------------------------
+
+"""Response from /api/v1/labels."""
+type LabelNames {
+  status: String!
+  data: [String!]!
+  warnings: [String!]
+}
+
+"""Response from /api/v1/label/<name>/values."""
+type LabelValues {
+  status: String!
+  data: [String!]!
+  warnings: [String!]
+}
+
+# ---------------------------------------------------------------------------
+# Export / import
+# ---------------------------------------------------------------------------
+
+"""Result payload from /api/v1/export endpoints."""
+type ExportResult {
+  metric: JSON!
+  values: [Float64!]!
+  timestamps: [Time!]!
+}
+
+"""Response wrapping a list of matching series."""
+type SeriesResult {
+  status: String!
+  data: [JSON!]!
+  warnings: [String!]
+}
+
+"""A single series descriptor returned by /api/v1/series."""
+type Series {
+  labels: [MetricLabel!]!
+}
+
+# ---------------------------------------------------------------------------
+# TSDB statistics
+# ---------------------------------------------------------------------------
+
+"""Aggregate series count across the store."""
+type SeriesCount {
+  total: Int!
+  byMetricName: [MetricGroupCount!]!
+  byLabelName: [MetricGroupCount!]!
+  byLabelValue: [MetricGroupCount!]!
+}
+
+"""Count of series belonging to a single grouping key."""
+type MetricGroupCount {
+  key: String!
+  count: Int!
+}
+
+"""Overall cardinality information from /api/v1/status/tsdb."""
+type Cardinality {
+  totalSeries: Int!
+  totalLabelValuePairs: Int!
+  seriesCountByMetricName: [MetricGroupCount!]!
+  seriesCountByLabelName: [MetricGroupCount!]!
+  seriesCountByFocusLabelValue: [MetricGroupCount!]!
+  seriesCountByLabelValuePair: [MetricGroupCount!]!
+  labelValueCountByLabelName: [MetricGroupCount!]!
+}
+
+"""Extended cardinality statistics including churn and staleness."""
+type CardinalityStats {
+  cardinality: Cardinality!
+  totalSeriesCreatedToday: Int
+  totalSeriesRemovedToday: Int
+  date: String
+}
+
+# ---------------------------------------------------------------------------
+# Storage and retention
+# ---------------------------------------------------------------------------
+
+"""Retention configuration for a VictoriaMetrics instance."""
+type RetentionInfo {
+  retentionPeriod: Duration!
+  maxDiskSpaceUsageBytes: Int
+  deduplicationEnabled: Boolean
+  deduplicationInterval: Duration
+}
+
+"""Top-level storage statistics."""
+type StorageInfo {
+  totalRowsCount: Int!
+  totalDataBlocksCount: Int!
+  bigPartsCount: Int!
+  smallPartsCount: Int!
+  bigSizeBytes: Int!
+  smallSizeBytes: Int!
+  memoryPartsSizeBytes: Int!
+  hotStorageInfo: HotStorageInfo
+  coldStorageInfo: ColdStorageInfo
+}
+
+"""Index (inverted) storage metadata."""
+type IndexInfo {
+  totalItemsCount: Int!
+  totalBlocksCount: Int!
+  sizeBytes: Int!
+}
+
+"""In-memory and recently flushed (hot) storage statistics."""
+type HotStorageInfo {
+  rowsCount: Int!
+  sizeBytes: Int!
+  minTimestamp: Time
+  maxTimestamp: Time
+}
+
+"""On-disk cold (big parts) storage statistics."""
+type ColdStorageInfo {
+  rowsCount: Int!
+  sizeBytes: Int!
+  minTimestamp: Time
+  maxTimestamp: Time
+}
+
+# ---------------------------------------------------------------------------
+# Data parts and rotation
+# ---------------------------------------------------------------------------
+
+"""Metadata about a single data part on disk."""
+type DataPart {
+  path: String!
+  rowsCount: Int!
+  blocksCount: Int!
+  sizeBytes: Int!
+  minTimestamp: Time!
+  maxTimestamp: Time!
+  mergeLevel: Int
+}
+
+"""Extended metadata for a data part."""
+type DataPartMeta {
+  part: DataPart!
+  createdAt: Time
+  mergedFrom: [String!]
+}
+
+"""Details about a rotation (merge / downsampling) event."""
+type Rotation {
+  partsBefore: Int!
+  partsAfter: Int!
+  bytesFreed: Int!
+  rowsFreed: Int!
+  startedAt: Time!
+  finishedAt: Time
+}
+
+"""Retention policy applied to a specific label selector."""
+type RetentionPolicy {
+  match: String!
+  retentionPeriod: Duration!
+  resolutionStep: Duration
+}
+
+# ---------------------------------------------------------------------------
+# Cluster components
+# ---------------------------------------------------------------------------
+
+"""Represents a node participating in a VictoriaMetrics cluster."""
+type ClusterNode {
+  id: String!
+  address: String!
+  role: ClusterRole!
+  status: NodeStatus!
+  details: NodeDetails
+}
+
+"""Cluster component roles."""
+enum ClusterRole {
+  VMINSERT
+  VMSELECT
+  VMSTORAGE
+}
+
+"""Detailed health and resource information for a cluster node."""
+type NodeDetails {
+  version: String
+  uptimeSeconds: Int
+  goroutines: Int
+  memStats: MemStats
+  flags: ComponentFlags
+}
+
+"""Runtime memory statistics for a component."""
+type MemStats {
+  sys: Int
+  heapAlloc: Int
+  heapSys: Int
+  gcPauseTotalNs: Int
+}
+
+"""Status of a cluster node."""
+type NodeStatus {
+  healthy: Boolean!
+  lastCheckedAt: Time
+  errorMessage: String
+}
+
+# ---------------------------------------------------------------------------
+# vmagent
+# ---------------------------------------------------------------------------
+
+"""Represents a vmagent instance."""
+type Vmagent {
+  id: String!
+  address: String!
+  version: String
+  flags: ComponentFlags
+  targets: [VmagentTarget!]!
+  remoteWriteTargets: [RemoteWriteTarget!]!
+  queueMetrics: QueueMetrics
+  backpressureMetrics: BackpressureMetrics
+}
+
+"""A scrape target discovered or configured in vmagent."""
+type VmagentTarget {
+  discoveredLabels: JSON!
+  labels: JSON!
+  scrapePool: String!
+  scrapeURL: String!
+  lastScrape: Time
+  lastScrapeDuration: Duration
+  health: TargetHealth!
+  status: TargetStatus!
+  error: String
+}
+
+"""Enumeration of target scrape health states."""
+enum TargetHealth {
+  UNKNOWN
+  UP
+  DOWN
+}
+
+"""Detailed status of a scrape target."""
+type TargetStatus {
+  health: TargetHealth!
+  lastError: String
+  lastScrapeDurationSeconds: Float64
+  scrapeInterval: Duration
+  scrapeTimeout: Duration
+}
+
+"""Runtime configuration flags for any VM component."""
+type ComponentFlags {
+  rawFlags: JSON!
+}
+
+"""Write-queue depth and throughput statistics."""
+type QueueMetrics {
+  pendingSamples: Int!
+  droppedSamplesTotal: Int!
+  sendDurationTotal: Duration
+}
+
+"""Back-pressure (flow-control) metrics for remote write."""
+type BackpressureMetrics {
+  ingestRateSamplesPerSecond: Float64
+  throttledRequestsTotal: Int
+  retriesTotal: Int
+}
+
+"""A remote-write destination configured in vmagent."""
+type RemoteWriteTarget {
+  url: String!
+  queueMetrics: QueueMetrics
+  inFlight: Int
+  lastSendAt: Time
+  lastSendDuration: Duration
+  sendDeadline: Time
+}
+
+# ---------------------------------------------------------------------------
+# Cluster component detail types
+# ---------------------------------------------------------------------------
+
+"""Vminsert component details."""
+type Vminsert {
+  node: ClusterNode!
+  accountID: String
+  projectID: String
+  maxLabelsPerTimeSeries: Int
+  maxLabelValueLen: Int
+}
+
+"""Vmselect component details."""
+type Vmselect {
+  node: ClusterNode!
+  accountID: String
+  cacheEnabled: Boolean
+  maxSamplesPerQuery: Int
+  maxSeriesPerQuery: Int
+}
+
+"""Vmstorage component details."""
+type Vmstorage {
+  node: ClusterNode!
+  storageDataPath: String
+  retentionPeriod: Duration
+  storageInfo: StorageInfo
+  indexInfo: IndexInfo
+}
+
+"""A logical replication set (shard) in a cluster."""
+type ReplicationSet {
+  shardIndex: Int!
+  nodes: [ClusterNode!]!
+  replicationFactor: Int!
+}
+
+# ---------------------------------------------------------------------------
+# Anomaly detection (Enterprise vmanomaly)
+# ---------------------------------------------------------------------------
+
+"""An anomaly event detected by vmanomaly."""
+type Anomaly {
+  metric: Metric!
+  detectedAt: Time!
+  anomalyScore: Float64!
+  expectedValue: Float64
+  actualValue: Float64!
+  severity: AnomalySeverity
+}
+
+"""Severity classification for anomaly events."""
+enum AnomalySeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+"""Aggregated anomaly report for a time window."""
+type AnomalyReport {
+  windowStart: Time!
+  windowEnd: Time!
+  totalAnomalies: Int!
+  anomalies: [Anomaly!]!
+  modelVersion: String
+}
+
+# ---------------------------------------------------------------------------
+# Security / API keys (Enterprise)
+# ---------------------------------------------------------------------------
+
+"""An API key used for authentication in Enterprise deployments."""
+type APIKey {
+  id: String!
+  name: String!
+  createdAt: Time!
+  expiresAt: Time
+  scopes: [String!]!
+  enabled: Boolean!
+}
+
+"""A bearer token for API authentication."""
+type Token {
+  id: String!
+  token: String!
+  createdAt: Time!
+  expiresAt: Time
+  description: String
+}
+
+# ---------------------------------------------------------------------------
+# Root query type
+# ---------------------------------------------------------------------------
+
+type Query {
+  """Instant query (mirrors /api/v1/query)."""
+  query(
+    query: String!
+    time: Time
+    timeout: Duration
+  ): QueryResult
+
+  """Range query (mirrors /api/v1/query_range)."""
+  queryRange(
+    query: String!
+    start: Time!
+    end: Time!
+    step: Duration!
+    timeout: Duration
+  ): RangeResult
+
+  """List all label names (mirrors /api/v1/labels)."""
+  labels(
+    match: [String!]
+    start: Time
+    end: Time
+  ): LabelNames
+
+  """List values for a label (mirrors /api/v1/label/<name>/values)."""
+  labelValues(
+    labelName: String!
+    match: [String!]
+    start: Time
+    end: Time
+  ): LabelValues
+
+  """Find matching series (mirrors /api/v1/series)."""
+  series(
+    match: [String!]!
+    start: Time
+    end: Time
+  ): SeriesResult
+
+  """TSDB cardinality stats (mirrors /api/v1/status/tsdb)."""
+  tsdbStatus(
+    topN: Int
+    date: String
+    match: String
+  ): CardinalityStats
+
+  """Metric metadata (mirrors /api/v1/metadata)."""
+  metricMetadata(
+    metric: String
+    limit: Int
+  ): JSON
+
+  """Active vmagent targets."""
+  targets(
+    state: TargetHealth
+  ): [VmagentTarget!]
+
+  """Cluster nodes."""
+  clusterNodes(
+    role: ClusterRole
+  ): [ClusterNode!]
+
+  """Anomaly reports (Enterprise vmanomaly)."""
+  anomalyReports(
+    start: Time!
+    end: Time!
+    metric: String
+    minSeverity: AnomalySeverity
+  ): [AnomalyReport!]
+
+  """Storage info for the instance."""
+  storageInfo: StorageInfo
+
+  """Retention configuration."""
+  retentionInfo: RetentionInfo
+}
