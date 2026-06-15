@@ -1,0 +1,389 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "VictoriaMetrics HTTP API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Perform a PromQL/MetricsQL instant query",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/query",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Perform a PromQL/MetricsQL instant query"
+        },
+        {
+          "info": {
+            "name": "Perform a PromQL/MetricsQL instant query (POST form)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/query"
+          },
+          "docs": "Perform a PromQL/MetricsQL instant query (POST form)"
+        },
+        {
+          "info": {
+            "name": "Range query over a time period",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/query_range",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "step",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Range query over a time period"
+        },
+        {
+          "info": {
+            "name": "Range query (POST form)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/query_range"
+          },
+          "docs": "Range query (POST form)"
+        },
+        {
+          "info": {
+            "name": "Retrieve label names within a time range",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/labels"
+          },
+          "docs": "Retrieve label names within a time range"
+        },
+        {
+          "info": {
+            "name": "Get all values for a specific label",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/label/:label/values",
+            "params": [
+              {
+                "name": "label",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all values for a specific label"
+        },
+        {
+          "info": {
+            "name": "Return series matching label matchers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/series",
+            "params": [
+              {
+                "name": "match[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Return series matching label matchers"
+        },
+        {
+          "info": {
+            "name": "Return series (POST form)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/series"
+          },
+          "docs": "Return series (POST form)"
+        },
+        {
+          "info": {
+            "name": "Cardinality and TSDB statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/status/tsdb"
+          },
+          "docs": "Cardinality and TSDB statistics"
+        },
+        {
+          "info": {
+            "name": "Get stored metrics metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/metadata"
+          },
+          "docs": "Get stored metrics metadata"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Import",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Import data in JSON line format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Import data in JSON line format"
+        },
+        {
+          "info": {
+            "name": "Import data in native binary format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import/native"
+          },
+          "docs": "Import data in native binary format"
+        },
+        {
+          "info": {
+            "name": "Import CSV-formatted metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import/csv"
+          },
+          "docs": "Import CSV-formatted metrics"
+        },
+        {
+          "info": {
+            "name": "Import data in Prometheus text exposition format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import/prometheus"
+          },
+          "docs": "Import data in Prometheus text exposition format"
+        },
+        {
+          "info": {
+            "name": "InfluxDB line protocol ingestion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/write"
+          },
+          "docs": "InfluxDB line protocol ingestion"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Export",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export raw samples in JSON line format",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/export"
+          },
+          "docs": "Export raw samples in JSON line format"
+        },
+        {
+          "info": {
+            "name": "Export raw samples (POST form)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/export"
+          },
+          "docs": "Export raw samples (POST form)"
+        },
+        {
+          "info": {
+            "name": "Export raw samples as CSV",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/export/csv"
+          },
+          "docs": "Export raw samples as CSV"
+        },
+        {
+          "info": {
+            "name": "Export raw samples in native binary format",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/api/v1/export/native"
+          },
+          "docs": "Export raw samples in native binary format"
+        },
+        {
+          "info": {
+            "name": "Prometheus federation endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/federate"
+          },
+          "docs": "Prometheus federation endpoint"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Admin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Delete matching time series from storage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/admin/tsdb/delete_series",
+            "params": [
+              {
+                "name": "match[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete matching time series from storage"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Third-Party",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ingest metrics in DataDog v1 format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/datadog/api/v1/series"
+          },
+          "docs": "Ingest metrics in DataDog v1 format"
+        },
+        {
+          "info": {
+            "name": "Ingest metrics in DataDog v2 format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/datadog/api/v2/series"
+          },
+          "docs": "Ingest metrics in DataDog v2 format"
+        },
+        {
+          "info": {
+            "name": "Graphite-compatible metric search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/graphite/metrics/find"
+          },
+          "docs": "Graphite-compatible metric search"
+        },
+        {
+          "info": {
+            "name": "OpenTSDB HTTP put compatibility",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/put"
+          },
+          "docs": "OpenTSDB HTTP put compatibility"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
