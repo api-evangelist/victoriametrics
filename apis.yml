@@ -8,7 +8,7 @@ description: VictoriaMetrics is a fast open-source time-series database and moni
   OpenTSDB, CSV, JSON, native), a federation endpoint and admin endpoints. The commercial
   Enterprise edition adds anomaly detection (vmanomaly), downsampling, multi-tenancy
   and other features.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Database
 - Time-Series
@@ -27,7 +27,7 @@ apis:
   description: Prometheus-compatible HTTP API for instant and range queries (PromQL
     / MetricsQL), label discovery, series search, metadata and TSDB status. Single-node
     default port 8428; in cluster mode served by vmselect on port 8481 under /select/<accountID>/prometheus/.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/url-examples/
   baseURL: http://<host>:8428
   tags:
@@ -51,7 +51,7 @@ apis:
     InfluxDB line protocol (/write or /insert/0/influx/write), DataDog v1 (/datadog/api/v1/series)
     and v2 (/datadog/api/v2/series), Graphite (TCP 2003 or /graphite endpoints), OpenTSDB
     (TCP 4242 or /api/put), CSV/JSON/ native /api/v1/import.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/#how-to-import-time-series-data
   baseURL: http://<host>:8428
   tags:
@@ -70,7 +70,7 @@ apis:
   description: Administrative endpoints for time-series deletion (/api/v1/admin/tsdb/
     delete_series), data export/import (/api/v1/export, /api/v1/import in various
     formats), Prometheus federation (/federate), TSDB stats and metadata.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/#how-to-delete-time-series
   baseURL: http://<host>:8428
   tags:
@@ -83,7 +83,7 @@ apis:
   description: Enterprise-only ML-driven anomaly detection. Reads via Prometheus query
     API, writes anomaly scores back via Prometheus remote-write. Multivariate models,
     confidence intervals and HA deployment supported.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/anomaly-detection/
   baseURL: http://<host>:8490
   tags:
