@@ -95,6 +95,12 @@ apis:
   - type: Documentation
     url: https://docs.victoriametrics.com/anomaly-detection/
 common:
+- type: VulnerabilityDisclosure
+  url: security/victoriametrics-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/victoriametrics-domain-security.yml
+- type: Authentication
+  url: authentication/victoriametrics-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/victoriametrics
 - type: Website
@@ -115,6 +121,8 @@ common:
   url: finops/victoriametrics-finops.yml
 - type: Integrations
   url: https://victoriametrics.com/partners/index.html
+- url: https://victoriametrics.com/index.xml
+  type: Blog
 integrations:
 - name: Skip to content
 - name: Allenta

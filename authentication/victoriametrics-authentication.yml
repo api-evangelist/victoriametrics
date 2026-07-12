@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/victoriametrics-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basic
+  type: http
+  scheme: basic
+  description: Optional HTTP Basic auth when fronted by vmauth
+  sources:
+  - openapi/victoriametrics-openapi.yml

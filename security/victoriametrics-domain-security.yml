@@ -1,0 +1,29 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: victoriametrics.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 23 02:46:41 2026 GMT
+  hsts: true
+  hsts_max_age: 15724800
+- host: docs.victoriametrics.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 23 05:24:42 2026 GMT
+  hsts: true
+  hsts_max_age: 15724800
+domains:
+- domain: victoriametrics.com
+  dnssec: true
+  caa:
+  - 0 issue "awstrust.com"
+  - 0 issue "letsencrypt.org"
+  - 0 issue "amazontrust.com"
+  - 0 issue "amazonaws.com"
+  - 0 issue "pki.goog"
+  - 0 iodef "mailto:security@victoriametrics.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: none
