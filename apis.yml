@@ -95,6 +95,8 @@ apis:
   - type: Documentation
     url: https://docs.victoriametrics.com/anomaly-detection/
 common:
+- type: AgenticAccess
+  url: agentic-access/victoriametrics-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/victoriametrics-vulnerability-disclosure.yml
 - type: DomainSecurity
