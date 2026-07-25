@@ -1,0 +1,78 @@
+openapi: 3.1.0
+info:
+  title: VictoriaMetrics HTTP Admin Third-Party API
+  version: '1'
+  description: 'VictoriaMetrics is a fast open-source time-series database. It exposes a
+
+    Prometheus-compatible HTTP query API plus a wide range of ingestion and
+
+    export endpoints (JSON, CSV, Prometheus text exposition, native binary,
+
+    InfluxDB Line Protocol, DataDog v1/v2, Graphite, OpenTSDB, federation).
+
+    Authentication is optional and typically delegated to vmauth or fronted
+
+    by mTLS.
+
+    '
+  contact:
+    name: VictoriaMetrics Documentation
+    url: https://docs.victoriametrics.com/
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://{host}:{port}
+  description: VictoriaMetrics single-node instance
+  variables:
+    host:
+      default: localhost
+    port:
+      default: '8428'
+security: []
+tags:
+- name: Third-Party
+  description: Endpoints compatible with other monitoring formats
+paths:
+  /datadog/api/v1/series:
+    post:
+      tags:
+      - Third-Party
+      summary: Ingest metrics in DataDog v1 format
+      operationId: datadogV1
+      responses:
+        '202':
+          description: Accepted
+  /datadog/api/v2/series:
+    post:
+      tags:
+      - Third-Party
+      summary: Ingest metrics in DataDog v2 format
+      operationId: datadogV2
+      responses:
+        '202':
+          description: Accepted
+  /graphite/metrics/find:
+    get:
+      tags:
+      - Third-Party
+      summary: Graphite-compatible metric search
+      operationId: graphiteFind
+      responses:
+        '200':
+          description: Search results
+  /api/put:
+    post:
+      tags:
+      - Third-Party
+      summary: OpenTSDB HTTP put compatibility
+      operationId: opentsdbPut
+      responses:
+        '204':
+          description: Accepted
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+      description: Optional HTTP Basic auth when fronted by vmauth

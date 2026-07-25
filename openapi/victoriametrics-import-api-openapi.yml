@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: VictoriaMetrics HTTP Admin Import API
+  version: '1'
+  description: 'VictoriaMetrics is a fast open-source time-series database. It exposes a
+
+    Prometheus-compatible HTTP query API plus a wide range of ingestion and
+
+    export endpoints (JSON, CSV, Prometheus text exposition, native binary,
+
+    InfluxDB Line Protocol, DataDog v1/v2, Graphite, OpenTSDB, federation).
+
+    Authentication is optional and typically delegated to vmauth or fronted
+
+    by mTLS.
+
+    '
+  contact:
+    name: VictoriaMetrics Documentation
+    url: https://docs.victoriametrics.com/
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://{host}:{port}
+  description: VictoriaMetrics single-node instance
+  variables:
+    host:
+      default: localhost
+    port:
+      default: '8428'
+security: []
+tags:
+- name: Import
+  description: Data ingestion endpoints
+paths:
+  /api/v1/import:
+    post:
+      tags:
+      - Import
+      summary: Import data in JSON line format
+      operationId: importJson
+      requestBody:
+        content:
+          application/x-ndjson:
+            schema:
+              type: string
+      responses:
+        '204':
+          description: Imported
+  /api/v1/import/native:
+    post:
+      tags:
+      - Import
+      summary: Import data in native binary format
+      operationId: importNative
+      responses:
+        '204':
+          description: Imported
+  /api/v1/import/csv:
+    post:
+      tags:
+      - Import
+      summary: Import CSV-formatted metrics
+      operationId: importCsv
+      responses:
+        '204':
+          description: Imported
+  /api/v1/import/prometheus:
+    post:
+      tags:
+      - Import
+      summary: Import data in Prometheus text exposition format
+      operationId: importPrometheus
+      responses:
+        '204':
+          description: Imported
+  /write:
+    post:
+      tags:
+      - Import
+      summary: InfluxDB line protocol ingestion
+      operationId: influxWrite
+      responses:
+        '204':
+          description: Written
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+      description: Optional HTTP Basic auth when fronted by vmauth

@@ -1,0 +1,86 @@
+openapi: 3.1.0
+info:
+  title: VictoriaMetrics HTTP Admin Export API
+  version: '1'
+  description: 'VictoriaMetrics is a fast open-source time-series database. It exposes a
+
+    Prometheus-compatible HTTP query API plus a wide range of ingestion and
+
+    export endpoints (JSON, CSV, Prometheus text exposition, native binary,
+
+    InfluxDB Line Protocol, DataDog v1/v2, Graphite, OpenTSDB, federation).
+
+    Authentication is optional and typically delegated to vmauth or fronted
+
+    by mTLS.
+
+    '
+  contact:
+    name: VictoriaMetrics Documentation
+    url: https://docs.victoriametrics.com/
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://{host}:{port}
+  description: VictoriaMetrics single-node instance
+  variables:
+    host:
+      default: localhost
+    port:
+      default: '8428'
+security: []
+tags:
+- name: Export
+  description: Raw sample export endpoints
+paths:
+  /api/v1/export:
+    get:
+      tags:
+      - Export
+      summary: Export raw samples in JSON line format
+      operationId: exportJson
+      responses:
+        '200':
+          description: Exported samples
+    post:
+      tags:
+      - Export
+      operationId: exportJsonPost
+      summary: Export raw samples (POST form)
+      responses:
+        '200':
+          description: Exported samples
+  /api/v1/export/csv:
+    get:
+      tags:
+      - Export
+      summary: Export raw samples as CSV
+      operationId: exportCsv
+      responses:
+        '200':
+          description: Exported samples
+  /api/v1/export/native:
+    get:
+      tags:
+      - Export
+      summary: Export raw samples in native binary format
+      operationId: exportNative
+      responses:
+        '200':
+          description: Exported samples
+  /federate:
+    get:
+      tags:
+      - Export
+      summary: Prometheus federation endpoint
+      operationId: federate
+      responses:
+        '200':
+          description: Federated metrics in text exposition format
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+      description: Optional HTTP Basic auth when fronted by vmauth
