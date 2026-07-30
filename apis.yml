@@ -8,7 +8,20 @@ description: VictoriaMetrics is a fast open-source time-series database and moni
   OpenTSDB, CSV, JSON, native), a federation endpoint and admin endpoints. The commercial
   Enterprise edition adds anomaly detection (vmanomaly), downsampling, multi-tenancy
   and other features.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: true
+  try_now: true
+  public: false
+  label: Freemium (free trial) · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/victoriametrics.png
 tags:
 - Database
 - Time-Series
@@ -24,9 +37,10 @@ specificationVersion: '0.19'
 apis:
 - aid: victoriametrics:prometheus-query
   name: VictoriaMetrics Prometheus-Compatible Query API
-  description: Prometheus-compatible HTTP API for instant and range queries (PromQL
-    / MetricsQL), label discovery, series search, metadata and TSDB status. Single-node
-    default port 8428; in cluster mode served by vmselect on port 8481 under /select/<accountID>/prometheus/.
+  description: >-
+    Prometheus-compatible HTTP API for instant and range queries (PromQL / MetricsQL), label discovery,
+    series search, metadata and TSDB status. Single-node default port 8428; in cluster mode served by
+    vmselect on port 8481 under /select/<accountID>/prometheus/.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/url-examples/
   baseURL: http://<host>:8428
@@ -47,10 +61,10 @@ apis:
     type: GraphQL
 - aid: victoriametrics:ingestion
   name: VictoriaMetrics Ingestion APIs
-  description: Multi-protocol ingestion — Prometheus remote-write (/api/v1/write),
-    InfluxDB line protocol (/write or /insert/0/influx/write), DataDog v1 (/datadog/api/v1/series)
-    and v2 (/datadog/api/v2/series), Graphite (TCP 2003 or /graphite endpoints), OpenTSDB
-    (TCP 4242 or /api/put), CSV/JSON/ native /api/v1/import.
+  description: >-
+    Multi-protocol ingestion — Prometheus remote-write (/api/v1/write), InfluxDB line protocol (/write
+    or /insert/0/influx/write), DataDog v1 (/datadog/api/v1/series) and v2 (/datadog/api/v2/series), Graphite
+    (TCP 2003 or /graphite endpoints), OpenTSDB (TCP 4242 or /api/put), CSV/JSON/ native /api/v1/import.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/#how-to-import-time-series-data
   baseURL: http://<host>:8428
@@ -67,9 +81,10 @@ apis:
     url: https://docs.victoriametrics.com/#how-to-import-time-series-data
 - aid: victoriametrics:admin
   name: VictoriaMetrics Admin / Federation API
-  description: Administrative endpoints for time-series deletion (/api/v1/admin/tsdb/
-    delete_series), data export/import (/api/v1/export, /api/v1/import in various
-    formats), Prometheus federation (/federate), TSDB stats and metadata.
+  description: >-
+    Administrative endpoints for time-series deletion (/api/v1/admin/tsdb/ delete_series), data export/import
+    (/api/v1/export, /api/v1/import in various formats), Prometheus federation (/federate), TSDB stats
+    and metadata.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/#how-to-delete-time-series
   baseURL: http://<host>:8428
@@ -80,9 +95,9 @@ apis:
   - Export
 - aid: victoriametrics:vmanomaly
   name: VictoriaMetrics Anomaly Detection (vmanomaly)
-  description: Enterprise-only ML-driven anomaly detection. Reads via Prometheus query
-    API, writes anomaly scores back via Prometheus remote-write. Multivariate models,
-    confidence intervals and HA deployment supported.
+  description: >-
+    Enterprise-only ML-driven anomaly detection. Reads via Prometheus query API, writes anomaly scores
+    back via Prometheus remote-write. Multivariate models, confidence intervals and HA deployment supported.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.victoriametrics.com/anomaly-detection/
   baseURL: http://<host>:8490
@@ -94,6 +109,56 @@ apis:
   properties:
   - type: Documentation
     url: https://docs.victoriametrics.com/anomaly-detection/
+- aid: victoriametrics:victoriametrics-admin-api
+  name: VictoriaMetrics Admin API
+  description: Administrative operations
+  humanURL: https://docs.victoriametrics.com/url-examples/
+  baseURL: http://<host>:8428
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/victoriametrics-admin-api-openapi.yml
+- aid: victoriametrics:victoriametrics-export-api
+  name: VictoriaMetrics Export API
+  description: Raw sample export endpoints
+  humanURL: https://docs.victoriametrics.com/url-examples/
+  baseURL: http://<host>:8428
+  tags:
+  - Export
+  properties:
+  - type: OpenAPI
+    url: openapi/victoriametrics-export-api-openapi.yml
+- aid: victoriametrics:victoriametrics-import-api
+  name: VictoriaMetrics Import API
+  description: Data ingestion endpoints
+  humanURL: https://docs.victoriametrics.com/url-examples/
+  baseURL: http://<host>:8428
+  tags:
+  - Import
+  properties:
+  - type: OpenAPI
+    url: openapi/victoriametrics-import-api-openapi.yml
+- aid: victoriametrics:victoriametrics-query-api
+  name: VictoriaMetrics Query API
+  description: Prometheus-compatible query endpoints (PromQL / MetricsQL)
+  humanURL: https://docs.victoriametrics.com/url-examples/
+  baseURL: http://<host>:8428
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/victoriametrics-query-api-openapi.yml
+- aid: victoriametrics:victoriametrics-third-party-api
+  name: VictoriaMetrics Third-Party API
+  description: Endpoints compatible with other monitoring formats
+  humanURL: https://docs.victoriametrics.com/url-examples/
+  baseURL: http://<host>:8428
+  tags:
+  - Third-Party
+  properties:
+  - type: OpenAPI
+    url: openapi/victoriametrics-third-party-api-openapi.yml
 common:
 - type: AgenticAccess
   url: agentic-access/victoriametrics-agentic-access.yml
