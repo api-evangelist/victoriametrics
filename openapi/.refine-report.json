@@ -1,0 +1,22 @@
+{
+  "provider": "victoriametrics",
+  "sources": [
+    "victoriametrics-admin-api-openapi.yml",
+    "victoriametrics-export-api-openapi.yml",
+    "victoriametrics-import-api-openapi.yml",
+    "victoriametrics-query-api-openapi.yml",
+    "victoriametrics-third-party-api-openapi.yml"
+  ],
+  "outputs": [
+    "victoriametrics-admin-api-openapi.yml",
+    "victoriametrics-export-api-openapi.yml",
+    "victoriametrics-import-api-openapi.yml",
+    "victoriametrics-query-api-openapi.yml",
+    "victoriametrics-third-party-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
