@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "VictoriaMetrics HTTP Admin Import API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Import",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Import data in JSON line format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Import data in JSON line format"
+        },
+        {
+          "info": {
+            "name": "Import data in native binary format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import/native"
+          },
+          "docs": "Import data in native binary format"
+        },
+        {
+          "info": {
+            "name": "Import CSV-formatted metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import/csv"
+          },
+          "docs": "Import CSV-formatted metrics"
+        },
+        {
+          "info": {
+            "name": "Import data in Prometheus text exposition format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/import/prometheus"
+          },
+          "docs": "Import data in Prometheus text exposition format"
+        },
+        {
+          "info": {
+            "name": "InfluxDB line protocol ingestion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/write"
+          },
+          "docs": "InfluxDB line protocol ingestion"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

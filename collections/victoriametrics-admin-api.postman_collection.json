@@ -1,0 +1,171 @@
+{
+  "item": [
+    {
+      "id": "5a9b5bef-c643-4895-8d06-2095d30d0bbc",
+      "name": "Admin",
+      "description": {
+        "content": "Administrative operations",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b5030371-6e11-4c88-bcd8-a2c684735ba0",
+          "name": "Delete matching time series from storage",
+          "request": {
+            "name": "Delete matching time series from storage",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "tsdb",
+                "delete_series"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "match[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "match[]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "22355cf8-6a80-4407-bdfa-4dd850a23f75",
+              "name": "Deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "admin",
+                    "tsdb",
+                    "delete_series"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "match[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "match[]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost",
+      "key": "host"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "8428",
+      "key": "port"
+    },
+    {
+      "type": "string",
+      "value": "http://{{host}}:{{port}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "76daf709-43ae-4674-9982-d7288a1d4723",
+    "name": "VictoriaMetrics HTTP Admin API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "VictoriaMetrics is a fast open-source time-series database. It exposes a\nPrometheus-compatible HTTP query API plus a wide range of ingestion and\nexport endpoints (JSON, CSV, Prometheus text exposition, native binary,\nInfluxDB Line Protocol, DataDog v1/v2, Graphite, OpenTSDB, federation).\nAuthentication is optional and typically delegated to vmauth or fronted\nby mTLS.\n\n\nContact Support:\n Name: VictoriaMetrics Documentation",
+      "type": "text/plain"
+    }
+  }
+}

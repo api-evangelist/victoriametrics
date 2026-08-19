@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "VictoriaMetrics HTTP Admin API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Admin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Delete matching time series from storage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/v1/admin/tsdb/delete_series",
+            "params": [
+              {
+                "name": "match[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete matching time series from storage"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

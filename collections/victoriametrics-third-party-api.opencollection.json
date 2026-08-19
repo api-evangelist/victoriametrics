@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "VictoriaMetrics HTTP Admin Third-Party API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Third-Party",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ingest metrics in DataDog v1 format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/datadog/api/v1/series"
+          },
+          "docs": "Ingest metrics in DataDog v1 format"
+        },
+        {
+          "info": {
+            "name": "Ingest metrics in DataDog v2 format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/datadog/api/v2/series"
+          },
+          "docs": "Ingest metrics in DataDog v2 format"
+        },
+        {
+          "info": {
+            "name": "Graphite-compatible metric search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://{host}:{port}/graphite/metrics/find"
+          },
+          "docs": "Graphite-compatible metric search"
+        },
+        {
+          "info": {
+            "name": "OpenTSDB HTTP put compatibility",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://{host}:{port}/api/put"
+          },
+          "docs": "OpenTSDB HTTP put compatibility"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
