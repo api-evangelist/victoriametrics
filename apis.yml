@@ -8,6 +8,18 @@ description: VictoriaMetrics is a fast open-source time-series database and moni
   OpenTSDB, CSV, JSON, native), a federation endpoint and admin endpoints. The commercial
   Enterprise edition adds anomaly detection (vmanomaly), downsampling, multi-tenancy
   and other features.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
