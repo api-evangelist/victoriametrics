@@ -36,7 +36,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/victoriametrics.png
 tags:
 - Database
-- Time-Series
+- Time Series
 - Monitoring
 - Open-Source
 - Prometheus
@@ -94,7 +94,7 @@ apis:
   - Ingestion
   - Remote Write
   - InfluxDB
-  - DataDog
+  - Datadog
   - Graphite
   - OpenTSDB
   tags_raw:
@@ -184,6 +184,8 @@ apis:
   humanURL: https://docs.victoriametrics.com/url-examples/
   baseURL: http://<host>:8428
   tags:
+  - Third Party
+  tags_raw:
   - Third-Party
   properties:
   - type: OpenAPI
