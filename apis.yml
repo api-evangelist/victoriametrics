@@ -134,6 +134,11 @@ apis:
   tags:
   - Enterprise
   - Anomaly Detection
+  - Machine-Learning
+  - Prometheus
+  tags_raw:
+  - Enterprise
+  - Anomaly Detection
   - ML
   - Prometheus
   properties:
