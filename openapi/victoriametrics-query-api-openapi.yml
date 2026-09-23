@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: VictoriaMetrics HTTP Admin Query API
+  title: VictoriaMetrics HTTP Query API
   version: '1'
   description: 'VictoriaMetrics is a fast open-source time-series database. It exposes a
 
@@ -12,9 +12,7 @@ info:
 
     Authentication is optional and typically delegated to vmauth or fronted
 
-    by mTLS.
-
-    '
+    by mTLS.'
   contact:
     name: VictoriaMetrics Documentation
     url: https://docs.victoriametrics.com/

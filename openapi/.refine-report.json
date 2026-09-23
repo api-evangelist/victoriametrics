@@ -1,11 +1,7 @@
 {
   "provider": "victoriametrics",
   "sources": [
-    "victoriametrics-admin-api-openapi.yml",
-    "victoriametrics-export-api-openapi.yml",
-    "victoriametrics-import-api-openapi.yml",
-    "victoriametrics-query-api-openapi.yml",
-    "victoriametrics-third-party-api-openapi.yml"
+    "_original/victoriametrics-openapi.yml"
   ],
   "outputs": [
     "victoriametrics-admin-api-openapi.yml",
@@ -17,6 +13,16 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "victoriametrics-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "victoriametrics-admin-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "victoriametrics-export-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "victoriametrics-import-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "victoriametrics-query-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "victoriametrics-third-party-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
