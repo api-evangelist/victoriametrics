@@ -39,7 +39,7 @@ tags:
 - Database
 - Time Series
 - Monitoring
-- Open-Source
+- Open Source
 - Prometheus
 - PromQL
 - MetricsQL
@@ -53,6 +53,7 @@ tags_raw:
 - PromQL
 - MetricsQL
 - Observability
+- Open-Source
 created: '2026-05-08'
 modified: '2026-05-08'
 specificationVersion: '0.23'
@@ -79,8 +80,6 @@ apis:
     url: https://docs.victoriametrics.com/url-examples/
   - type: PromQLCompat
     url: https://docs.victoriametrics.com/keyConcepts.html#metricsql
-  - url: graphql/victoriametrics-graphql.md
-    type: GraphQL
 - aid: victoriametrics:ingestion
   name: VictoriaMetrics Ingestion APIs
   description: >-
@@ -134,13 +133,14 @@ apis:
   tags:
   - Enterprise
   - Anomaly Detection
-  - Machine-Learning
+  - Machine Learning
   - Prometheus
   tags_raw:
   - Enterprise
   - Anomaly Detection
   - ML
   - Prometheus
+  - Machine-Learning
   properties:
   - type: Documentation
     url: https://docs.victoriametrics.com/anomaly-detection/
