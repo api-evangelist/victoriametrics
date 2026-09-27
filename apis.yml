@@ -9,16 +9,22 @@ description: VictoriaMetrics is a fast open-source time-series database and moni
   Enterprise edition adds anomaly detection (vmanomaly), downsampling, multi-tenancy
   and other features.
 deliveryModel:
-  model: saas
-  open_source: false
+  model: open-core
+  license: Apache-2.0
+  license_evidence:
+    repo: victoriametrics/victoriametrics
+    spdx: Apache-2.0
+    stars: 17767
+  open_source: true
   commercial: true
   callable_host: false
-  label: Hosted service · you call their endpoint
+  label: Open core · an OSS project plus a commercial hosted product
   confidence: medium
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-license
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
