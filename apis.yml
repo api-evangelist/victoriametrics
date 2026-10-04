@@ -203,6 +203,9 @@ apis:
   - type: OpenAPI
     url: openapi/victoriametrics-third-party-api-openapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/victoriametrics-capability-edges.yml
+  name: VictoriaMetrics Business Capability Map
 - type: AgenticAccess
   url: agentic-access/victoriametrics-agentic-access.yml
 - type: VulnerabilityDisclosure
