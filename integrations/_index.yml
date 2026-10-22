@@ -89,3 +89,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: victoriametrics-digital-ocean-own
+  label: Digital Ocean (own)
+  partner: digital-ocean
+  partner_name: Digital Ocean (own)
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/victorialogs-single
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
